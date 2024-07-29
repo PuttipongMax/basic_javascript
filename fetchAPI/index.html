@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Document</title>
+ <script>
+  document.addEventListener("DOMContentLoaded", function() {
+   async function province(){
+    let provinceDiv = document.getElementById("province");
+
+    fetch("https://raw.githubusercontent.com/kongvut/thai-province-data/master/api_province.json")
+     .then((response) => {
+      if(response.ok === true && response.status === 200){
+       let json = response.json();
+       return json;
+      }else{
+       throw("response error!")
+      }
+     })
+     .then((json) => {
+      json.forEach((element, index) => {
+       try{
+        let provinceElement = document.createElement("div");
+        provinceElement.innerHTML = `
+         <p><string>NO. : </string> ${index+1} </p>
+         <p><strong>Name (TH):</strong> ${element.name_th}</p>
+         <p><strong>Name (EN):</strong> ${element.name_en}</p>
+         <p><strong>Geography ID:</strong> ${element.geography_id}</p>
+         <p><strong>Created data:</strong> ${element.created_at}</p>
+         <hr>
+        `;
+        provinceDiv.appendChild(provinceElement);
+       }catch(error){
+        return console.log("Data show error!", error);
+       }
+      });
+     })
+     .catch((error) => {
+      return console.log("Fetch data error!", error)
+     });
+    }
+  province();
+ });
+ </script>
+</head>
+<body>
+ <div>
+  <h1>HEllo</h1>
+  <div id="province" ></div>
+ </div>
+</body>
+</html>
+
