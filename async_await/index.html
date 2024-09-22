@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Document</title>
+ <script>
+  async function miPeticion(){
+   try{
+    let response = await fetch("https://raw.githubusercontent.com/kongvut/thai-province-data/master/api_province.json"),
+    json = await response.json();
+
+    let provinceDiv = document.getElementById("province");
+
+    if(!response.ok && response.status != 200){
+     throw ("Hubo un error en la peticion");
+    }
+    json.forEach((element, index) => {
+     let provinceElement = document.createElement("div");
+        provinceElement.innerHTML = `
+         <p><string>NO. : </string> ${index+1} </p>
+         <p><strong>Name (TH):</strong> ${element.name_th}</p>
+         <p><strong>Name (EN):</strong> ${element.name_en}</p>
+         <p><strong>Geography ID:</strong> ${element.geography_id}</p>
+         <p><strong>Created data:</strong> ${element.created_at}</p>
+         <hr>
+        `;
+     provinceDiv.appendChild(provinceElement);
+    });
+   }catch(error){
+    console.log(error);
+   }finally{
+    console.log("Hola soy un finally si o si me voy a mostrar");
+   }
+  }
+
+  miPeticion();
+ </script>
+</head>
+<body>
+ <div>
+  <h1>HEllo</h1>
+  <div id="province" ></div>
+ </div>
+</body>
+</html>
